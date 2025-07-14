@@ -22,7 +22,7 @@ cp .env.example .env
 ./vendor/bin/sail up -d
 
 # Setup database
-./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan migrate:fresh --seed
 ```
 
 ## Usage
