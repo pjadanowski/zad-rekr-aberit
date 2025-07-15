@@ -6,6 +6,11 @@
 
 What I would also consider doing is, for example, moving the logic for creating or fetching Products or the Cart from the controller into separate actions, such as `Cart/GetCartAction`. This would also make it easier to implement authorization checks (e.g., whether the user is allowed to retrieve the cart), and the code would be cleaner and more modular.
 
+- I added caching for product categories, since in my opinion these models will change the least frequently. When changes do occur, we simply clear the cache.
+
+I also added pagination for the product list (of course, this is all within the scope of a demo). These features can easily be added to other endpoints as needed
+
+
 I also added some example tests and cleaned up boilerplate code. 
 I'm happy to answer any further questions!
 

@@ -6,6 +6,7 @@ use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::withCount('products')->get();
+        $categories = Cache::remember('categories.index', 60, function () {
+            return Category::withCount('products')->get();
+        });
 
         return CategoryResource::collection($categories);
     }
@@ -26,6 +29,7 @@ class CategoryController extends Controller
     {
         $category = Category::create($request->validated());
 
+        Cache::forget('categories.index');
         return new CategoryResource($category);
     }
 
@@ -46,6 +50,7 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
 
+        Cache::forget('categories.index');
         return new CategoryResource($category);
     }
 
@@ -56,6 +61,7 @@ class CategoryController extends Controller
     {
         $category->delete();
 
+        Cache::forget('categories.index');
         return response()->json(['message' => 'Category deleted']);
     }
 }
